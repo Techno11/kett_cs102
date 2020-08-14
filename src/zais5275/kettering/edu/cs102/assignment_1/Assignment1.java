@@ -65,9 +65,8 @@ public class Assignment1 {
 
 	}
 
-	//TODO: Simplify!!!
 	private static void insertNewPlayer() {
-		//System.out.println("-------------CREATE NEW PLAYER-------------");
+		System.out.println("-------------CREATE NEW PLAYER-------------");
 		// Array to Store String Inputs. Pre-Filled with Field name for printing
 		String[] inputs = {"Player ID", "First Name", "Last Name", "Country"};
 		// Variable to store birth year

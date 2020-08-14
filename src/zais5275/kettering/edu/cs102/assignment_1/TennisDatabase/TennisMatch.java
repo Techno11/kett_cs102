@@ -5,7 +5,7 @@ public class TennisMatch implements TennisMatchInterface {
 
 
     private String idPlayer1, idPlayer2, tournament, score;
-    private int dateYear, dateMonth, dateDay;
+    private int dateYear, dateMonth, dateDay, winner;
 
     public TennisMatch(String idPlayer1, String idPlayer2, String tournament, String score, int dateYear, int dateMonth, int dateDay) {
         this.idPlayer1 = idPlayer1;
@@ -15,6 +15,7 @@ public class TennisMatch implements TennisMatchInterface {
         this.dateYear = dateYear;
         this.dateMonth = dateMonth;
         this.dateDay = dateDay;
+        winner = TennisMatchInterface.processMatchScore(score);
     }
 
     @Override
@@ -54,7 +55,7 @@ public class TennisMatch implements TennisMatchInterface {
 
     @Override
     public int getWinner() {
-        return 0;
+        return winner;
     }
 
     @Override
