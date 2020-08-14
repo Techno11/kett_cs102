@@ -68,7 +68,8 @@ public class TennisPlayerContainer implements TennisPlayerContainerInterface {
 
     @Override
     public void insertMatch(TennisMatch m) throws TennisDatabaseException {
-
+        getPlayer(m.getIdPlayer1()).insertMatch(m); // Insert match player 1
+        getPlayer(m.getIdPlayer2()).insertMatch(m); // Insert match player 2
     }
 
     @Override

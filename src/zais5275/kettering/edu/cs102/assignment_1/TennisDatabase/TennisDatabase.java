@@ -1,5 +1,7 @@
 package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
 
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
@@ -55,9 +57,23 @@ public class TennisDatabase implements TennisDatabaseInterface {
         return tpc.getAllPlayers();
     }
 
-    @Override
+    @Override // Calculate matches of player on the fly
     public TennisMatch[] getMatchesOfPlayer(String playerId) throws TennisDatabaseException, TennisDatabaseRuntimeException {
-        return new TennisMatch[0];
+        // Get player
+        TennisPlayer p = tpc.getPlayer(playerId);
+        // Get Matches
+        TennisMatch[] matches = tmc.getAllMatches();
+        // # of matches is wins + losses
+        TennisMatch[] playersMatches = new TennisMatch[p.getWin() + p.getLoss()];
+        int i = 0;
+        for (TennisMatch m : matches ) {
+            if(m.getIdPlayer1().equals(playerId) || m.getIdPlayer2().equals(playerId)) {
+                playersMatches[i] = m;
+                i++;
+            }
+            if(i == p.getLoss() + p.getWin()) break; // If the array is full, exit. We've found all the matches.
+        }
+        return playersMatches;
     }
 
     @Override

@@ -65,6 +65,27 @@ public class Assignment1 {
 
 	}
 
+	// Prints all of a player's stored matches
+	private static void printAllPlayersMatches() {
+		System.out.print("Please Enter Player ID: ");
+		// Get Input
+		String temp = input.next();
+		// Check that Player exists
+		try{
+			tDb.getPlayer(temp);
+			// If we get here, the player exists
+			for (TennisMatch m : tDb.getMatchesOfPlayer(temp)) {
+				printMatch(m);
+			}
+		} catch (TennisDatabaseRuntimeException e) { // Player doesn't exist
+			System.out.print("Player doesn't exist! Try again. ");
+			// Recursively Call the function again, to allow input again.
+			printAllPlayersMatches();
+		} catch (TennisDatabaseException e) {
+			System.out.println("Unable to get matches: " + e.getMessage());
+		}
+	}
+
 	private static void insertNewPlayer() {
 		System.out.println("-------------CREATE NEW PLAYER-------------");
 		// Array to Store String Inputs. Pre-Filled with Field name for printing
@@ -209,11 +230,6 @@ public class Assignment1 {
 		}
 	}
 
-	// Prints all of a player's stored matches
-	private static void printAllPlayersMatches() {
-
-	}
-
 	// Prints all Matches in Database
 	private static void printAllMatches() {
 		// Get Players
@@ -242,7 +258,7 @@ public class Assignment1 {
 			// Print ID, First Name, Last Name
 			System.out.print(p.getId() + ": " + p.getFirstName() + " " + p.getLastName() + ", ");
 			// Print Birth Year, Country, W/L Record
-			System.out.println(p.getBirthYear() + ", " + p.getCountry() + ", " + " TODO: Win Loss Record ");
+			System.out.println(p.getBirthYear() + ", " + p.getCountry() + ", " + p.getWin() + "/" + p.getLoss());
 		}
 	}
 
@@ -250,8 +266,17 @@ public class Assignment1 {
 	private static void printMatch(TennisMatch m) {
 		// Print Date
 		System.out.print(m.getDateYear() + "/" + m.getDateMonth() + "/" + m.getDateDay() + ", ");
-		// Print Birth Year, Country, W/L Record
-		//TODO Get Player Names, not IDs
-		System.out.println(m.getIdPlayer1() + " - " + m.getIdPlayer2() + ", " + m.getTournament() + ", " + m.getMatchScore());
+		// Print Birth Year, Country, Scores
+		System.out.println(formatName(m.getIdPlayer1()) + " - " + formatName(m.getIdPlayer2()) + ", " + m.getTournament() + ", " + m.getMatchScore());
+	}
+
+	// Format Player name for Printing
+	private static String formatName(String playerId) {
+		// Get Player
+		TennisPlayer p = tDb.getPlayer(playerId);
+		// First letter of first name, and make it uppercase
+		char firstLetter = Character.toUpperCase(p.getFirstName().charAt(0));
+		// Proper Format
+		return firstLetter + "." +  p.getLastName().toUpperCase();
 	}
 }
