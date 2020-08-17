@@ -5,7 +5,7 @@ package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
  We Won't sort every time. We INSERT new entry at correct, sorted position.
  **/
 
-public class TennisMatchContainer implements  TennisMatchContainerInterface {
+class TennisMatchContainer implements  TennisMatchContainerInterface {
 
     private TennisMatch[] matches = new TennisMatch[0];
 

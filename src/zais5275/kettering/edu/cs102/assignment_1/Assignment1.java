@@ -2,6 +2,7 @@ package zais5275.kettering.edu.cs102.assignment_1;
 
 import zais5275.kettering.edu.cs102.assignment_1.TennisDatabase.*;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Assignment1 {
@@ -31,7 +32,14 @@ public class Assignment1 {
 			// Print Main Menu
 			printMainMenu();
 			// Read and switch on user input
-			switch(input.nextInt()) {
+			int fromConsole = -1;
+			try {
+				fromConsole = input.nextInt();
+			} catch (InputMismatchException e) {
+				input.next();
+				System.out.print("Please enter a number, 1-6! ");
+			}
+			switch(fromConsole) {
 				case 1: {
 					printAllPlayers();
 					break;
@@ -54,6 +62,10 @@ public class Assignment1 {
 				}
 				case 6: {
 					System.exit(0);
+					break;
+				}
+				case -1 : { // No Input from console taken
+					System.out.println(" Please try again!");
 					break;
 				}
 				default: {
@@ -129,11 +141,11 @@ public class Assignment1 {
             tDb.insertPlayer(inputs[0], inputs[1], inputs[2], birthYear, inputs[3]);
             System.out.println("Successfully created player " + inputs[0]);
             printPlayer(tDb.getPlayer(inputs[0]));
-        } catch (TennisDatabaseException e) {
+        } catch (TennisDatabaseException | TennisDatabaseRuntimeException e) {
             System.out.println("Failed to create player: " + e.getMessage());
         }
 
-    }
+	}
 
 	private static void insertNewMatch() {
 		System.out.println("-------------CREATE NEW MATCH-------------");

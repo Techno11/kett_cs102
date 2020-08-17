@@ -7,7 +7,7 @@ public class TennisMatch implements TennisMatchInterface {
     private String idPlayer1, idPlayer2, tournament, score;
     private int dateYear, dateMonth, dateDay, winner;
 
-    public TennisMatch(String idPlayer1, String idPlayer2, String tournament, String score, int dateYear, int dateMonth, int dateDay) {
+    public TennisMatch(String idPlayer1, String idPlayer2, String tournament, String score, int dateYear, int dateMonth, int dateDay) throws TennisDatabaseRuntimeException {
         this.idPlayer1 = idPlayer1;
         this.idPlayer2 = idPlayer2;
         this.tournament = tournament;

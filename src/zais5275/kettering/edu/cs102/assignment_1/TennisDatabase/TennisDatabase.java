@@ -57,23 +57,9 @@ public class TennisDatabase implements TennisDatabaseInterface {
         return tpc.getAllPlayers();
     }
 
-    @Override // Calculate matches of player on the fly
+    @Override
     public TennisMatch[] getMatchesOfPlayer(String playerId) throws TennisDatabaseException, TennisDatabaseRuntimeException {
-        // Get player
-        TennisPlayer p = tpc.getPlayer(playerId);
-        // Get Matches
-        TennisMatch[] matches = tmc.getAllMatches();
-        // # of matches is wins + losses
-        TennisMatch[] playersMatches = new TennisMatch[p.getWin() + p.getLoss()];
-        int i = 0;
-        for (TennisMatch m : matches ) {
-            if(m.getIdPlayer1().equals(playerId) || m.getIdPlayer2().equals(playerId)) {
-                playersMatches[i] = m;
-                i++;
-            }
-            if(i == p.getLoss() + p.getWin()) break; // If the array is full, exit. We've found all the matches.
-        }
-        return playersMatches;
+        return tpc.getMatchesOfPlayer(playerId);
     }
 
     @Override

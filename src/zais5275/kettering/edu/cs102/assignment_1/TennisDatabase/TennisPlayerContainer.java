@@ -1,34 +1,30 @@
 package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
 
-// Somehow, this circularly doublely linked list works.
-public class TennisPlayerContainer implements TennisPlayerContainerInterface {
+class TennisPlayerContainer implements TennisPlayerContainerInterface {
 
     private TennisPlayerContainerNode head;
     private int size = 0;
 
-    // If problems arise, set this variable to true to enable debug prints
     private boolean enDebug = false;
 
-    @Override
+    @Override // Get a player
     public TennisPlayer getPlayer(String id) throws TennisDatabaseRuntimeException {
-        // Check if given ID is null, if so, throw error
-        if(id == null) throw new TennisDatabaseRuntimeException("Invalid Player ID!");
-        // Go through our linked list and find the player
-        for(TennisPlayerContainerNode curr = head; curr != null; curr = curr.getNext()) {
-            if(curr.getPlayer().getId().equals(id)) return curr.getPlayer();
-        }
-        // If we get here, the player with that ID doesnt exist.
-        throw new TennisDatabaseRuntimeException("No player with that ID found!");
+        // Get the container
+        return getPlayerContainer(id).getPlayer();
     }
 
-    // Todo: Consider rewriting this to utilize recursive
+    // Insert a player to our list
     @Override // Add Player, in alphabetical order by ID
     public void insertPlayer(TennisPlayer p) throws TennisDatabaseException {
+        if(enDebug) System.out.println("starting player insertion");
         // 1st item in list case
         if(head == null) {
+            if (enDebug) System.out.println("first in list");
             TennisPlayerContainerNode newPlayer = new TennisPlayerContainerNode(p);
             newPlayer.setNext(newPlayer);
             newPlayer.setPrev(newPlayer);
+            System.out.println("Inserted " + newPlayer.getPlayer().getId());
+            size++;
             head = newPlayer;
         } else { // This isn't the first item in our list, lets add it in alphabetical
             // Iterate through our linked list
@@ -50,29 +46,34 @@ public class TennisPlayerContainer implements TennisPlayerContainerInterface {
                     if(i == 0) {
                         head = newPlayer; // If Current player is head, update head
                     }
+                    size++; // Increase size
+                    System.out.println("Inserted " + newPlayer.getPlayer().getId());
                     break; // We've inserted the player, break.
                 } else if(curr.getNext() == head) { // we didnt insert the new player, but we're at the end of the list
                     if (enDebug) System.out.println("End of list. Inserting " + p.getId() + " after " + curr.getPlayer().getId());
                     TennisPlayerContainerNode newPlayer = new TennisPlayerContainerNode(p); // Create new player
                     newPlayer.setPrev(curr); // Set the previous
+                    newPlayer.setNext(head); // Set Next
                     curr.setNext(newPlayer); // Add to list
                     head.setPrev(newPlayer); // Since we added this to the end of the list, we need to update the head
+                    size++; // Incease list size
+                    System.out.println("Inserted " + newPlayer.getPlayer().getId());
                     break; // We've inserted the player, break.
                 }
                 i++;
             }
         }
-        size++;
         if (enDebug) System.out.println(size);
     }
 
-    @Override
+    @Override // Insert a match
     public void insertMatch(TennisMatch m) throws TennisDatabaseException {
-        getPlayer(m.getIdPlayer1()).insertMatch(m); // Insert match player 1
-        getPlayer(m.getIdPlayer2()).insertMatch(m); // Insert match player 2
+        System.out.println("starting match insertion for player: match " + m.getTournament());
+        getPlayerContainer(m.getIdPlayer1()).insertMatch(m); // Insert Match Player 1
+        getPlayerContainer(m.getIdPlayer2()).insertMatch(m); // Insert Match Player 2
     }
 
-    @Override
+    @Override // Return a basic array of all players
     public TennisPlayer[] getAllPlayers() throws TennisDatabaseRuntimeException {
         TennisPlayer[] players = new TennisPlayer[size];
         TennisPlayerContainerNode tempNode = head;
@@ -83,8 +84,31 @@ public class TennisPlayerContainer implements TennisPlayerContainerInterface {
         return players;
     }
 
-    @Override
+    @Override // Return all matches a player is in
     public TennisMatch[] getMatchesOfPlayer(String playerId) throws TennisDatabaseException, TennisDatabaseRuntimeException {
-        return new TennisMatch[0];
+        // Check if given ID is null, if so, throw error
+        if(playerId == null) throw new TennisDatabaseRuntimeException("Invalid Player ID!");
+        // Go through our linked list and find the player
+        for(TennisPlayerContainerNode curr = head; curr != null; curr = curr.getNext()) {
+            if(curr.getPlayer().getId().equals(playerId)) {
+                return curr.getMatches();
+            }
+        }
+        // If we get here, the player with that ID doesnt exist.
+        throw new TennisDatabaseRuntimeException("No player with that ID found!");
+    }
+
+    // Get Player Container
+    private TennisPlayerContainerNode getPlayerContainer(String id) throws TennisDatabaseRuntimeException {
+        // Check if given ID is null, if so, throw error
+        if(id == null) throw new TennisDatabaseRuntimeException("Invalid Player ID!");
+        // Go through our linked list and find the player
+        TennisPlayerContainerNode curr = head;
+        for(int i = 0; i < size; i++) {
+            if(curr.getPlayer().getId().equals(id)) return curr;
+            curr = curr.getNext();
+        }
+        // If we get here, the player with that ID doesnt exist.
+        throw new TennisDatabaseRuntimeException("No player with ID " + id + " found!");
     }
 }

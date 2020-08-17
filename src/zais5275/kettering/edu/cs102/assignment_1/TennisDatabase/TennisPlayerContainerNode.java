@@ -1,12 +1,15 @@
 package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
 
-public class TennisPlayerContainerNode implements TennisPlayerContainerNodeInterface {
+class TennisPlayerContainerNode implements TennisPlayerContainerNodeInterface {
 
     private TennisPlayer player;
     private TennisPlayerContainerNode next, prev;
+    private SortedLinkedList<TennisMatch> matches;
+
 
     public TennisPlayerContainerNode(TennisPlayer tp) {
         player = tp;
+        matches = new SortedLinkedList<TennisMatch>();
     }
 
     @Override
@@ -36,11 +39,20 @@ public class TennisPlayerContainerNode implements TennisPlayerContainerNodeInter
 
     @Override
     public void insertMatch(TennisMatch m) throws TennisDatabaseException {
-
+        try {
+            player.insertMatch(m); // For Win Loss
+            matches.insert(m); // Add to list
+        } catch (Exception e) {
+            throw new TennisDatabaseException("Unable to add match to player's list! " + e.getMessage());
+        }
     }
 
     @Override
     public TennisMatch[] getMatches() throws TennisDatabaseRuntimeException {
-        return new TennisMatch[0];
+        TennisMatch[] matchesArr = new TennisMatch[matches.size()];
+        for (int i = 0; i < matches.size(); i++) {
+            matchesArr[i] = matches.get(i);
+        }
+        return matchesArr;
     }
 }
