@@ -1,4 +1,4 @@
-package zais5275.kettering.edu.cs102.Quiz1;
+package Quiz1;
 
 public class Quiz1 {
 

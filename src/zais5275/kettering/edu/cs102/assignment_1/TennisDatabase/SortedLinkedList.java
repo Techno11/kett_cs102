@@ -5,7 +5,7 @@
 // CS-102, Summer 2020
 // Assignment 1
 
-package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
+package TennisDatabase;
 
 // SortedLinkedList generic class, implemeting a sorted linked list (to store the matches of a player).
 // Note: "T extends Comparable" is an upper bounded type parameter ("T" is any class derived/implementing Comparable).

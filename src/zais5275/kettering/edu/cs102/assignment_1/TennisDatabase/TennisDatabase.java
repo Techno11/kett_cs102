@@ -1,4 +1,4 @@
-package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
+package TennisDatabase;
 
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 
@@ -81,10 +81,14 @@ public class TennisDatabase implements TennisDatabaseInterface {
         // -Player 1 and 2 HAVE to be in DB. If not, Discard Match and error
         // -Have to be able to process score
 
-        // Create Tennis Match Object
-        TennisMatch newMatch = new TennisMatch(idPlayer1, idPlayer2, tournament, score, year, month, day);
-        // Insert Match into Containers
-        tmc.insertMatch(newMatch);
-        tpc.insertMatch(newMatch);
+        try {
+            // Create Tennis Match Object
+            TennisMatch newMatch = new TennisMatch(idPlayer1, idPlayer2, tournament, score, year, month, day);
+            // Insert Match into Containers
+            tmc.insertMatch(newMatch);
+            tpc.insertMatch(newMatch);
+        } catch(TennisDatabaseRuntimeException e) {
+            throw new TennisDatabaseException(e.getMessage());
+        }
     }
 }

@@ -5,7 +5,7 @@
 // CS-102, Summer 2020
 // Assignment 1
 
-package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
+package TennisDatabase;
 
 
 // Interface (package-private) providing the specifications for the TennisPlayerNode class.

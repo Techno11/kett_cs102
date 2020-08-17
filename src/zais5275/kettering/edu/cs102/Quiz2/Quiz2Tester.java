@@ -1,6 +1,6 @@
-package zais5275.kettering.edu.cs102.Quiz2;
+package Quiz2;
 
-import zais5275.kettering.edu.cs102.Quiz2.MyList.MyLinkedList;
+import Quiz2.MyList.MyLinkedList;
 
 public class Quiz2Tester {
     public static void main (String[] args) {

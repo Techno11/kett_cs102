@@ -5,7 +5,7 @@
 // CS-102, Summer 2020
 // Assignment 1
 
-package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
+package TennisDatabase;
 
 import java.lang.String;
 

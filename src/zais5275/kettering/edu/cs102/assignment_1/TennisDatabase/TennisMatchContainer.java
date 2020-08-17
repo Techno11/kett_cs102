@@ -1,4 +1,4 @@
-package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
+package TennisDatabase;
 
 /**
  This container will represent a SORTED, Resizable, Array.
