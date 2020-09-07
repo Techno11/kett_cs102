@@ -1,58 +1,69 @@
-package TennisDatabase;
+package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
 
 class TennisPlayerContainerNode implements TennisPlayerContainerNodeInterface {
 
     private TennisPlayer player;
-    private TennisPlayerContainerNode next, prev;
-    private SortedLinkedList<TennisMatch> matches;
+    private TennisPlayerContainerNode childLeft, childRight;
+    private SortedLinkedList<TennisMatch> listMatches;
 
 
     public TennisPlayerContainerNode(TennisPlayer tp) {
         player = tp;
-        matches = new SortedLinkedList<TennisMatch>();
+        this.listMatches = new SortedLinkedList<TennisMatch>();
+        this.childLeft = null;
+        this.childRight = null;
     }
 
-    @Override
     public TennisPlayer getPlayer() {
         return player;
     }
 
-    @Override
-    public TennisPlayerContainerNode getPrev() {
-        return prev;
+    public SortedLinkedList<TennisMatch> getMatchList() {
+        return listMatches;
     }
 
-    @Override
-    public TennisPlayerContainerNode getNext() {
-        return next;
+    public TennisPlayerContainerNode getLeftChild() {
+        return childLeft;
     }
 
-    @Override
-    public void setPrev(TennisPlayerContainerNode p) {
-        prev = p;
+    public TennisPlayerContainerNode getRightChild() {
+        return childRight;
     }
 
-    @Override
-    public void setNext(TennisPlayerContainerNode n) {
-        next = n;
+    public void setPlayer(TennisPlayer p) {
+        this.player = p;
     }
 
-    @Override
+    public void setMatchList(SortedLinkedList<TennisMatch> ml) {
+        this.listMatches = ml;
+    }
+
+    public void setLeftChild(TennisPlayerContainerNode lc) {
+        this.childLeft = lc;
+    }
+
+    public void setRightChild(TennisPlayerContainerNode rc) {
+        this.childRight = rc;
+    }
+
     public void insertMatch(TennisMatch m) throws TennisDatabaseException {
         try {
             player.insertMatch(m); // For Win Loss
-            matches.insert(m); // Add to list
+            listMatches.insert(m); // Add to list
         } catch (Exception e) {
             throw new TennisDatabaseException("Unable to add match to player's list! " + e.getMessage());
         }
     }
 
-    @Override
     public TennisMatch[] getMatches() throws TennisDatabaseRuntimeException {
-        TennisMatch[] matchesArr = new TennisMatch[matches.size()];
-        for (int i = 0; i < matches.size(); i++) {
-            matchesArr[i] = matches.get(i);
+        TennisMatch[] matchesArr = new TennisMatch[listMatches.size()];
+        for (int i = 0; i < listMatches.size(); i++) {
+            matchesArr[i] = listMatches.get(i);
         }
         return matchesArr;
+    }
+
+    public void deleteMatchesOfPlayer(String playerId) throws TennisDatabaseRuntimeException {
+
     }
 }

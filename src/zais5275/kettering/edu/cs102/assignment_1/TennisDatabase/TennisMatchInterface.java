@@ -3,9 +3,9 @@
 
 // Giuseppe Turini
 // CS-102, Summer 2020
-// Assignment 1
+// Assignment 2
 
-package TennisDatabase;
+package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
 
 import java.lang.String;
 import java.util.Scanner;
@@ -41,7 +41,7 @@ public interface TennisMatchInterface extends Comparable<TennisMatch> {
    // Desc.: Static internal method to process a tennis match score (as a string), recursively.
    // Output: An array of 2 integers storing the sets won by each player.
    //         Throws an unchecked (non-critical) exception if the score is invalid (no winner).
-   static int[] processMatchScoreRec(String matchScore) throws TennisDatabaseRuntimeException {
+   static int[] processMatchScoreRec( String matchScore ) throws TennisDatabaseRuntimeException {
       // Init output variable.
       int[] setScore = new int[] { 0, 0 };
       // Error: input score is empty (recursion should NEVER reach this point).

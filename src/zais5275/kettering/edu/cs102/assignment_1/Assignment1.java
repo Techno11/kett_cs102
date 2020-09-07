@@ -1,4 +1,6 @@
-import TennisDatabase.*;
+package zais5275.kettering.edu.cs102.assignment_1;
+
+import zais5275.kettering.edu.cs102.assignment_1.TennisDatabase.*;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -6,7 +8,7 @@ import java.util.Scanner;
 public class Assignment1 {
 	private static TennisDatabase tDb;
 	private static Scanner input;
-
+/*
 	public static void main(String[] args) {
 		// Create new scanner object to read console input
 		input = new Scanner(System.in);
@@ -229,7 +231,7 @@ public class Assignment1 {
 	}
 
 	/* ******* Print Operations ********** */
-
+/*
 	// Prints all players in Database
 	private static void printAllPlayers() {
 		// Get Players
@@ -289,4 +291,5 @@ public class Assignment1 {
 		// Proper Format
 		return firstLetter + "." +  p.getLastName().toUpperCase();
 	}
+	*/
 }

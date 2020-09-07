@@ -1,0 +1,67 @@
+package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
+
+public class TennisPlayerQueue implements TennisPlayerQueueInterface {
+    private int numPlayersMax;
+    private int front;
+    private int back;
+    private int numPlayers;
+    private TennisPlayer[] players;
+
+    public TennisPlayerQueue() {
+        numPlayersMax = 4; // Init max players
+        players = new TennisPlayer[numPlayersMax];
+        front = 0;
+        back = this.numPlayersMax -1;
+        numPlayers = 0;
+    }
+
+    public int getNumPlayers() {
+        return numPlayers;
+    }
+
+    public boolean isEmpty() {
+        return (numPlayers == 0);
+    }
+
+    public void enqueue(TennisPlayer p) throws TennisDatabaseException {
+        if(this.numPlayers == this.numPlayersMax) {
+            // Queue Full, resize it
+            TennisPlayer[] newArray = new TennisPlayer[numPlayersMax * 2]; // Create new bigger array
+
+            for(int i = 0; i < numPlayers; i++) { // Transfer elements
+                // Get Current player
+                int currIndex = (this.front + i) % this.numPlayersMax;
+                TennisPlayer currPlayer = this.players[currIndex];
+                // Copy player to new array
+                newArray[i] = currPlayer;
+            }
+            this.players = newArray; // Set global array to local
+            this.numPlayersMax = numPlayersMax * 2; // Increase max players
+            this.front = 0; // New Front is at 0
+            this.back = numPlayers - 1; // New Back
+        }
+        // Array not full, perform enqueue
+        this.back = (this.back + 1) % this.numPlayersMax; // Back now points to free cell
+        this.players[this.back] = p; // Input player at back
+        this.numPlayers++;
+    }
+
+    public TennisPlayer dequeue() throws TennisDatabaseException {
+        if(!isEmpty()) {
+            // Circular Array not empty, perform dequeue
+            TennisPlayer playerAtFront = this.players[this.front]; // Get front player
+            this.players[this.front] = null; // nullify it
+            this.front = (this.front + 1) % this.numPlayersMax; // Update front
+            this.numPlayers--; // Update current num of players
+            return playerAtFront; // Return player at front
+        } else {
+            throw new TennisDatabaseException("Cannot dequeue player: Queue is empty!");
+        }
+    }
+
+    public TennisPlayer peek() throws TennisDatabaseException {
+        if(isEmpty()) throw new TennisDatabaseException("Cannot Peek on Queue: Queue empty!");
+        return players[front]; // If isnt empty, return player at front
+    }
+
+}

@@ -1,4 +1,4 @@
-package TennisDatabase;
+package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
 
 public class TennisPlayer implements TennisPlayerInterface {
 
@@ -14,27 +14,22 @@ public class TennisPlayer implements TennisPlayerInterface {
         this.birthYear = birthYear;
     }
 
-    @Override
     public String getId() {
         return id;
     }
 
-    @Override
     public String getFirstName() {
         return firstName;
     }
 
-    @Override
     public String getLastName() {
         return lastName;
     }
 
-    @Override
     public int getBirthYear() {
         return birthYear;
     }
 
-    @Override
     public String getCountry() {
         return country;
     }
@@ -47,7 +42,6 @@ public class TennisPlayer implements TennisPlayerInterface {
         return loss;
     }
 
-    @Override
     public int compareTo(TennisPlayer o) {
         return this.getId().compareTo(o.getId());
     }

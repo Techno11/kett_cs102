@@ -3,9 +3,9 @@
 
 // Giuseppe Turini
 // CS-102, Summer 2020
-// Assignment 1
+// Assignment 2
 
-package TennisDatabase;
+package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
 
 import java.lang.String;
 
@@ -16,6 +16,13 @@ interface TennisDatabaseInterface {
    // Output: Throws an unchecked (non-critical) exception if the loading is not fully successfull.
    //         Throws a checked (critical) exception if the file (file name) does not exist.
    public void loadFromFile( String fileName ) throws TennisDatabaseException, TennisDatabaseRuntimeException;
+   
+   // Desc.: Saves data to file following the format described in the specifications.
+   // Output: Throws a checked (critical) exception if the file open for writing fails.
+   public void saveToFile( String fileName ) throws TennisDatabaseException;
+   
+   // Desc.: Resets the database, making it empty.
+   public void reset();
    
    // Desc.: Search for a player in the database by input id, and returns a copy of that player (if found).
    // Output: Throws an unchecked (non-critical) exception if there is no player with that input id.
@@ -39,6 +46,10 @@ interface TennisDatabaseInterface {
    // Input: All the data required for a player.
    // Output: Throws a checked (critical) exception if player id is already in the database.
    public void insertPlayer( String id, String firstName, String lastName, int year, String country ) throws TennisDatabaseException;
+   
+   // Desc.: Search for a player in the database by id, and delete it with all his matches (if found).
+   // Output: Throws an unchecked (non-critical) exception if there is no player with that input id.
+   public void deletePlayer( String playerId ) throws TennisDatabaseRuntimeException;
 
    // Desc.: Insert a match into the database.
    // Input: All the data required for a match.

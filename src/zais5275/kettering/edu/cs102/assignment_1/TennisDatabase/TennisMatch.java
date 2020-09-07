@@ -1,4 +1,4 @@
-package TennisDatabase;
+package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
 
 public class TennisMatch implements TennisMatchInterface {
 
@@ -18,47 +18,38 @@ public class TennisMatch implements TennisMatchInterface {
         winner = TennisMatchInterface.processMatchScore(score);
     }
 
-    @Override
     public String getIdPlayer1() {
         return idPlayer1;
     }
 
-    @Override
     public String getIdPlayer2() {
         return idPlayer2;
     }
 
-    @Override
     public int getDateYear() {
         return dateYear;
     }
 
-    @Override
     public int getDateMonth() {
         return dateMonth;
     }
 
-    @Override
     public int getDateDay() {
         return dateDay;
     }
 
-    @Override
     public String getTournament() {
         return tournament;
     }
 
-    @Override
     public String getMatchScore() {
         return score;
     }
 
-    @Override
     public int getWinner() {
         return winner;
     }
 
-    @Override
     public int compareTo(TennisMatch o) {
         int thisDate = dateToInt(this);
         int otherDate = dateToInt(o);
