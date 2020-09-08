@@ -1,8 +1,10 @@
+/*
+ * @author Soren Zaiser (zais5275)
+ * 7Sept2020
+ */
 package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 
 class TennisPlayerContainer implements TennisPlayerContainerInterface {
 
@@ -33,7 +35,7 @@ class TennisPlayerContainer implements TennisPlayerContainerInterface {
      * @throws TennisDatabaseRuntimeException if there is an error during the search, most likely due to player not existing
      */
     public TennisPlayer getPlayer(String id) throws TennisDatabaseRuntimeException {
-        return getPlayerRec(root, id);
+        return getPlayerRec(root, id).getPlayer();
     }
 
 
@@ -44,20 +46,21 @@ class TennisPlayerContainer implements TennisPlayerContainerInterface {
      * @return Player's object, if it exists
      * @throws TennisDatabaseRuntimeException if there is an error during the search, most likely due to player not existing
      */
-    private TennisPlayer getPlayerRec(TennisPlayerContainerNode currRoot, String id) throws TennisDatabaseRuntimeException {
+    private TennisPlayerContainerNode getPlayerRec(TennisPlayerContainerNode currRoot, String id) throws TennisDatabaseRuntimeException {
+        //System.out.println("Searching for " + id + ", comparing to " + ((currRoot != null ) ? currRoot.getPlayer().getId() : "null"));
         // Base Case, Check if empty
-        if(currRoot == null) { // Throw an error if we're at the end of the road, and haven't found anything
+        if(currRoot == null) {
             throw new TennisDatabaseRuntimeException("Error looking for player: Does not exist in database. ");
         } else { // Not First node, forward insert left or right subtree
             int compare = currRoot.getPlayer().getId().compareTo(id);
             if(compare > 0) {
                 // Search in Right Subtree
-                return getPlayerRec(currRoot.getRightChild(), id);
+                return getPlayerRec(currRoot.getLeftChild(), id);
             } else if (compare < 0) {
                 // Search in Left Subtree
-                return getPlayerRec(currRoot.getLeftChild(), id);
+                return getPlayerRec(currRoot.getRightChild(), id);
             } else {
-                return currRoot.getPlayer(); // Found!
+                return currRoot; // Found!
             }
         }
     }
@@ -87,7 +90,7 @@ class TennisPlayerContainer implements TennisPlayerContainerInterface {
             return new TennisPlayerContainerNode(p);
         } else {
             // BST not empty, proceed recursive insert in left/right subtree depending on comparison
-            int compartRes = p.compareTo(currRoot.getPlayer());
+            int compartRes = p.getId().compareTo(currRoot.getPlayer().getId());
             // 3-way comparison
             if(compartRes < 0) {
                 // Input player is less than player in currRoot, insert input player in left subtree of currRoot
@@ -106,12 +109,67 @@ class TennisPlayerContainer implements TennisPlayerContainerInterface {
         }
     }
 
+    /**
+     * Deletes a player
+     * @param playerId id of player to be deleted
+     * @throws TennisDatabaseRuntimeException if there is an error deleting player
+     */
     public void deletePlayer(String playerId) throws TennisDatabaseRuntimeException {
-
+        root = deletePlayerRec(root, playerId);
+        numPlayers--;
     }
 
-    public void insertMatch(TennisMatch m) throws TennisDatabaseException {
+    /**
+     * Recursive implementation of delete
+     * @param currRoot current root to be searched
+     * @param id id to be deleted
+     * @return finalized node
+     */
+    private TennisPlayerContainerNode deletePlayerRec(TennisPlayerContainerNode currRoot, String id) {
+        // Base Case: if tree empty
+        if (currRoot == null)  return currRoot;
 
+        // Go down tree
+        int compare = currRoot.getPlayer().getId().compareTo(id);
+        if (compare < 0) {
+            currRoot.setLeftChild(deletePlayerRec(currRoot.getLeftChild(), id));
+        } else if (compare > 0) {
+            currRoot.setRightChild(deletePlayerRec(currRoot.getRightChild(), id));
+        }
+
+
+        // If key is same as root, root node needs to be deleted
+        else {
+            // node with one or no child
+            if (currRoot.getRightChild() == null) {
+                return currRoot.getLeftChild();
+            } else if (currRoot.getLeftChild() == null) {
+                return currRoot.getRightChild();
+            }
+
+            // if we have two children, get next via inorder
+            String min = currRoot.getPlayer().getId();
+            while (currRoot.getLeftChild() != null)
+            {
+                min = currRoot.getLeftChild().getPlayer().getId();
+                currRoot = currRoot.getLeftChild();
+            }
+
+            // Delete next via inorder
+            currRoot.setRightChild(deletePlayerRec(currRoot.getRightChild(), currRoot.getPlayer().getId()));
+        }
+
+        return root;
+    }
+
+    /**
+     * Insert a match into the respective players containers
+     * @param m Match to be inserted
+     * @throws TennisDatabaseException if there is an error during insertion
+     */
+    public void insertMatch(TennisMatch m) throws TennisDatabaseException {
+        getPlayerRec(root, m.getIdPlayer1()).insertMatch(m); // Get and Insert match for player 1
+        getPlayerRec(root, m.getIdPlayer2()).insertMatch(m); // Get and Insert match for player 2
     }
 
     /**
@@ -128,7 +186,7 @@ class TennisPlayerContainer implements TennisPlayerContainerInterface {
         // Then, Recursively fill the array
         getAllPlayersRec(root, arr, 0);
         // Finally, Sort it, in case it isn't in alphabetical order
-        Arrays.sort(arr, new TennisPlayerIdSort());
+        Arrays.sort(arr);
         // Return final product
         return arr;
     }
@@ -143,26 +201,18 @@ class TennisPlayerContainer implements TennisPlayerContainerInterface {
         if(currRoot == null) { } // We've reached the end of a leaf, do nothing
         else {
             getAllPlayersRec(currRoot.getLeftChild(), arr, index); // Go down left leaf
-            while(arr[index] != null) index++; // Find next open place in array
+            // We must do this because an "int" is a primitive, not an object and isn't a pointer, like other objects.
+            while(arr[index] != null) index++; // Find next open place in array.
             arr[index]= currRoot.getPlayer(); // Insert into array
             getAllPlayersRec(currRoot.getRightChild(), arr, index); // Go down right leaf
         }
     }
 
     public TennisMatch[] getMatchesOfPlayer(String playerId) throws TennisDatabaseException, TennisDatabaseRuntimeException {
-        return new TennisMatch[0];
+        return getPlayerRec(root, playerId).getMatches();
     }
 
     public void deleteMatchesOfPlayer(String playerId) throws TennisDatabaseRuntimeException {
 
-    }
-
-    /* *********** Sort Class for Array Sorter ************ */
-    class TennisPlayerIdSort implements Comparator<TennisPlayer> {
-        // Sort in ascending order by ID
-        public int compare(TennisPlayer a, TennisPlayer b) {
-            // System.out.println(a.getId() + " " + b.getId());
-            return a.compareTo(b);
-        }
     }
 }

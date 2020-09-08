@@ -1,6 +1,3 @@
-
-
-
 // Giuseppe Turini
 // CS-102, Summer 2020
 // Assignment 2

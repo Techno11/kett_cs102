@@ -1,4 +1,8 @@
 package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
+/*
+ * @author Soren Zaiser (zais5275)
+ * 7Sept2020
+ */
 
 public class TennisPlayerQueue implements TennisPlayerQueueInterface {
     private int numPlayersMax;
@@ -7,6 +11,9 @@ public class TennisPlayerQueue implements TennisPlayerQueueInterface {
     private int numPlayers;
     private TennisPlayer[] players;
 
+    /**
+     * Creates a new Tennis Player Queue
+     */
     public TennisPlayerQueue() {
         numPlayersMax = 4; // Init max players
         players = new TennisPlayer[numPlayersMax];
@@ -15,14 +22,27 @@ public class TennisPlayerQueue implements TennisPlayerQueueInterface {
         numPlayers = 0;
     }
 
+    /**
+     * Get number of players
+     * @return number of players in queue
+     */
     public int getNumPlayers() {
         return numPlayers;
     }
 
+    /**
+     * Get if queue is empty
+     * @return if the queue is empty
+     */
     public boolean isEmpty() {
         return (numPlayers == 0);
     }
 
+    /**
+     * Enqueue a new player
+     * @param p player to enqueue
+     * @throws TennisDatabaseException if there is an error queueing the player
+     */
     public void enqueue(TennisPlayer p) throws TennisDatabaseException {
         if(this.numPlayers == this.numPlayersMax) {
             // Queue Full, resize it
@@ -46,6 +66,11 @@ public class TennisPlayerQueue implements TennisPlayerQueueInterface {
         this.numPlayers++;
     }
 
+    /**
+     * Dequeues a player
+     * @return dequeued player
+     * @throws TennisDatabaseException if there is an error dequeueing the player
+     */
     public TennisPlayer dequeue() throws TennisDatabaseException {
         if(!isEmpty()) {
             // Circular Array not empty, perform dequeue
@@ -59,6 +84,11 @@ public class TennisPlayerQueue implements TennisPlayerQueueInterface {
         }
     }
 
+    /**
+     * Peek at front of queue
+     * @return first element of queue
+     * @throws TennisDatabaseException if there is an empty queue
+     */
     public TennisPlayer peek() throws TennisDatabaseException {
         if(isEmpty()) throw new TennisDatabaseException("Cannot Peek on Queue: Queue empty!");
         return players[front]; // If isnt empty, return player at front

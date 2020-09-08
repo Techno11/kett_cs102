@@ -1,7 +1,10 @@
+/*
+ * @author Soren Zaiser (zais5275)
+ * 7Sept2020
+ */
 package zais5275.kettering.edu.cs102.assignment_1;
 
 import zais5275.kettering.edu.cs102.assignment_1.TennisDatabase.*;
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -66,6 +69,26 @@ public class Assignment2 {
                     System.exit(0);
                     break;
                 }
+                case 7: {
+                    printAPlayer();
+                    break;
+                }
+                case 8: {
+                    deletePlayer();
+                    break;
+                }
+                case 9: {
+                    resetDatabase();
+                    break;
+                }
+                case 10: {
+                    // Import from File
+                    break;
+                }
+                case 11: {
+                    // Export to file
+                    break;
+                }
                 case -1 : { // No Input from console taken
                     System.out.println(" Please try again!");
                     break;
@@ -78,7 +101,41 @@ public class Assignment2 {
         }
     }
 
-    /* ******** Methods from Assignment 1 (modified to work with new structure) ******** */
+    // Resets database
+    private static void resetDatabase() {
+        tDb.resetDatabase();
+    }
+
+    // Prints a player
+    private static void printAPlayer() {
+        System.out.print("Please Enter Player ID: ");
+        // Get Input
+        String temp = input.next();
+        // Check that Player exists
+        try{
+            printPlayer(tDb.getPlayer(temp));
+        } catch (TennisDatabaseRuntimeException e) { // Player doesn't exist
+            System.out.print("Player doesn't exist: " + e.getMessage() + " Try again. ");
+            // Recursively Call the function again, to allow input again.
+            printAPlayer();
+        }
+    }
+
+    // Prints a player
+    private static void deletePlayer() {
+        System.out.print("Please Enter Player ID: ");
+        // Get Input
+        String temp = input.next();
+        // Check that Player exists
+        try{
+            tDb.getPlayer(temp);
+            tDb.deletePlayer(temp);
+        } catch (TennisDatabaseRuntimeException e) { // Player doesn't exist
+            System.out.print("Player doesn't exist: " + e.getMessage() + " Try again. ");
+            // Recursively Call the function again, to allow input again.
+            printAPlayer();
+        }
+    }
 
     // Prints all of a player's stored matches
     private static void printAllPlayersMatches() {
@@ -93,7 +150,7 @@ public class Assignment2 {
                 printMatch(m);
             }
         } catch (TennisDatabaseRuntimeException e) { // Player doesn't exist
-            System.out.print("Player doesn't exist! Try again. ");
+            System.out.print("Player doesn't exist: " + e.getMessage() + " Try again. ");
             // Recursively Call the function again, to allow input again.
             printAllPlayersMatches();
         } catch (TennisDatabaseException e) {
@@ -101,6 +158,7 @@ public class Assignment2 {
         }
     }
 
+    // Insert a new player
     private static void insertNewPlayer() {
         System.out.println("-------------CREATE NEW PLAYER-------------");
         // Array to Store String Inputs. Pre-Filled with Field name for printing
@@ -150,6 +208,7 @@ public class Assignment2 {
 
     }
 
+    // Insert new match
     private static void insertNewMatch() {
         System.out.println("-------------CREATE NEW MATCH-------------");
 
@@ -265,6 +324,11 @@ public class Assignment2 {
         System.out.println("4 --> Insert New Player");
         System.out.println("5 --> Insert New Match");
         System.out.println("6 --> Exit");
+        System.out.println("7 --> Print Player By ID");
+        System.out.println("8 --> Delete Player");
+        System.out.println("9 --> Reset Database");
+        System.out.println("10 --> Import From File");
+        System.out.println("11 --> Export To File");
         System.out.print("Your Choice? ");
     }
 
@@ -288,11 +352,16 @@ public class Assignment2 {
 
     // Format Player name for Printing
     private static String formatName(String playerId) {
-        // Get Player
-        TennisPlayer p = tDb.getPlayer(playerId);
-        // First letter of first name, and make it uppercase
-        char firstLetter = Character.toUpperCase(p.getFirstName().charAt(0));
-        // Proper Format
-        return firstLetter + "." +  p.getLastName().toUpperCase();
+        //try {
+            // Get Player
+            TennisPlayer p = tDb.getPlayer(playerId);
+            // First letter of first name, and make it uppercase
+            char firstLetter = Character.toUpperCase(p.getFirstName().charAt(0));
+            // Proper Format
+            return firstLetter + "." +  p.getLastName().toUpperCase();
+        //} catch(TennisDatabaseRuntimeException e) {
+        //    System.out.println("Error formatting player name: " + e.getMessage());
+        //    return playerId;
+        //}
     }
 }

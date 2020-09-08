@@ -1,3 +1,7 @@
+/*
+ * @author Soren Zaiser (zais5275)
+ * 7Sept2020
+ */
 package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
 
 import java.util.Iterator; // JCF interface
@@ -9,16 +13,28 @@ class TennisPlayerContainerIterator implements Iterator<TennisPlayer> {
     private TennisPlayerContainerNode root; // Entry Point to container data
     private TennisPlayerQueue queue;
 
+    /**
+     * Create a new Tennis Player Container Iterator
+     * @param r root node to iterate
+     */
     public TennisPlayerContainerIterator(TennisPlayerContainerNode r) {
         this.root = r;
         this.queue = new TennisPlayerQueue();
     }
 
+    /**
+     * Returns if queue has next
+     * @return if queue has next
+     */
     public boolean hasNext() {
         // Check if internal queue is not empty
         return this.queue.isEmpty();
     }
 
+    /**
+     * Returns next player in queue and dequeue it
+     * @return next player in queue
+     */
     public TennisPlayer next() {
         // Dequeue a player from internal queue, and return it
         try {
@@ -28,7 +44,10 @@ class TennisPlayerContainerIterator implements Iterator<TennisPlayer> {
         }
     }
 
-    // Prepare inorder traversal
+    /**
+     * Prepare inorder traversal
+     * @throws TennisDatabaseException if there is an error in the traversal
+     */
     public void setInorder() throws TennisDatabaseException {
         // Clean the internal queue, ready to be filled up
         this.queue = new TennisPlayerQueue();
@@ -36,7 +55,11 @@ class TennisPlayerContainerIterator implements Iterator<TennisPlayer> {
         setInorderRec(this.root);
     }
 
-    // Recursive implementation for the "setInorder method"
+    /**
+     *  Recursive implementation for the "setInorder method
+     * @param currRoot current root of the traversal
+     * @throws TennisDatabaseException if there is an error in the traversal
+     */
     private void setInorderRec(TennisPlayerContainerNode currRoot) throws TennisDatabaseException {
         // Check if BST is empty
         if(currRoot == null) {
@@ -48,7 +71,10 @@ class TennisPlayerContainerIterator implements Iterator<TennisPlayer> {
         }
     }
 
-    // Prepare preorder traversal
+    /**
+     * Prepare preorder traversal
+     * @throws TennisDatabaseException if there is an error in the traversal
+     */
     public void setPreorder() throws TennisDatabaseException {
         // Clean the internal queue, ready to be filled up
         this.queue = new TennisPlayerQueue();
@@ -56,7 +82,11 @@ class TennisPlayerContainerIterator implements Iterator<TennisPlayer> {
         setPreorderRec(this.root);
     }
 
-    // Recursive implementation for the "setPreorder method"
+    /**
+     *  Recursive implementation for the setPreorder method
+     * @param currRoot current root of the traversal
+     * @throws TennisDatabaseException if there is an error in the traversal
+     */
     private void setPreorderRec(TennisPlayerContainerNode currRoot) throws TennisDatabaseException {
         // Check if BST is empty
         if(currRoot == null) {
@@ -68,7 +98,10 @@ class TennisPlayerContainerIterator implements Iterator<TennisPlayer> {
         }
     }
 
-    // Prepare postorder traversal
+    /**
+     * Prepare postorder traversal
+     * @throws TennisDatabaseException if there is an error in the traversal
+     */
     public void setPostorder() throws TennisDatabaseException {
         // Clean the internal queue, ready to be filled up
         this.queue = new TennisPlayerQueue();
@@ -76,7 +109,11 @@ class TennisPlayerContainerIterator implements Iterator<TennisPlayer> {
         setPostorderRec(this.root);
     }
 
-    // Recursive implementation for the "setPostorder method"
+    /**
+     *  Recursive implementation for the setPostorder method
+     * @param currRoot current root of the traversal
+     * @throws TennisDatabaseException if there is an error in the traversal
+     */
     private void setPostorderRec(TennisPlayerContainerNode currRoot) throws TennisDatabaseException {
         // Check if BST is empty
         if(currRoot == null) {
