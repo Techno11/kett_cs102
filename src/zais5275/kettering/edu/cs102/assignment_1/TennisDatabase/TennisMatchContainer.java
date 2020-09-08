@@ -52,7 +52,18 @@ class TennisMatchContainer implements  TennisMatchContainerInterface {
         return new TennisMatch[0];
     }
 
+    /**
+     * Delete all matches with a specific player in it
+     * @param playerId player's matches to be deleted
+     * @throws TennisDatabaseRuntimeException
+     */
     public void deleteMatchesOfPlayer(String playerId) throws TennisDatabaseRuntimeException {
-
+        ArrayList<Integer> toBeDeleted = new ArrayList<>();
+        for(int i = 0; i < matches.size(); i++) {
+            if(matches.get(i).getIdPlayer1().equals(playerId) || matches.get(i).getIdPlayer2().equals(playerId)) toBeDeleted.add(i);
+        }
+        for(int i = 0; i < toBeDeleted.size(); i++) {
+            matches.remove(toBeDeleted.get(i) - i);
+        }
     }
 }
