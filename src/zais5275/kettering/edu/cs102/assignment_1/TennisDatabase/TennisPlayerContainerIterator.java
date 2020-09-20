@@ -28,7 +28,7 @@ class TennisPlayerContainerIterator implements Iterator<TennisPlayer> {
      */
     public boolean hasNext() {
         // Check if internal queue is not empty
-        return this.queue.isEmpty();
+        return !this.queue.isEmpty();
     }
 
     /**
@@ -51,7 +51,7 @@ class TennisPlayerContainerIterator implements Iterator<TennisPlayer> {
     public void setInorder() throws TennisDatabaseException {
         // Clean the internal queue, ready to be filled up
         this.queue = new TennisPlayerQueue();
-        // Call recursive inplementation to traverse the BST using inorder strat
+        // Call recursive implementation to traverse the BST using inorder strat
         setInorderRec(this.root);
     }
 
@@ -61,13 +61,12 @@ class TennisPlayerContainerIterator implements Iterator<TennisPlayer> {
      * @throws TennisDatabaseException if there is an error in the traversal
      */
     private void setInorderRec(TennisPlayerContainerNode currRoot) throws TennisDatabaseException {
-        // Check if BST is empty
-        if(currRoot == null) {
-            // Do nothing
-        } else {
-            setInorderRec(currRoot.getLeftChild()); // Process left of currRoot
-            this.queue.enqueue(currRoot.getPlayer()); // Queue player
-            setInorderRec(this.root.getRightChild()); // Process right of currRoot
+        // Check if BST leaf is empty
+        if( currRoot == null ) {}
+        else {
+            setInorderRec(currRoot.getLeftChild()); // Queue Left leaf
+            this.queue.enqueue(currRoot.getPlayer()); // Queue Player
+            setInorderRec(currRoot.getRightChild()); // Queue Right Leaf
         }
     }
 
@@ -78,7 +77,7 @@ class TennisPlayerContainerIterator implements Iterator<TennisPlayer> {
     public void setPreorder() throws TennisDatabaseException {
         // Clean the internal queue, ready to be filled up
         this.queue = new TennisPlayerQueue();
-        // Call recursive inplementation to traverse the BST using inorder strat
+        // Call recursive implementation to traverse the BST using inorder strat
         setPreorderRec(this.root);
     }
 
@@ -94,7 +93,7 @@ class TennisPlayerContainerIterator implements Iterator<TennisPlayer> {
         } else {
             this.queue.enqueue(currRoot.getPlayer()); // Queue player
             setPreorderRec(currRoot.getLeftChild()); // Process left of currRoot
-            setPreorderRec(this.root.getRightChild()); // Process right of currRoot
+            setPreorderRec(currRoot.getRightChild()); // Process right of currRoot
         }
     }
 
@@ -105,7 +104,7 @@ class TennisPlayerContainerIterator implements Iterator<TennisPlayer> {
     public void setPostorder() throws TennisDatabaseException {
         // Clean the internal queue, ready to be filled up
         this.queue = new TennisPlayerQueue();
-        // Call recursive inplementation to traverse the BST using inorder strat
+        // Call recursive implementation to traverse the BST using inorder strat
         setPostorderRec(this.root);
     }
 
@@ -120,7 +119,7 @@ class TennisPlayerContainerIterator implements Iterator<TennisPlayer> {
             // Do nothing
         } else {
             setPostorderRec(currRoot.getLeftChild()); // Process left of currRoot
-            setPostorderRec(this.root.getRightChild()); // Process right of currRoot
+            setPostorderRec(currRoot.getRightChild()); // Process right of currRoot
             this.queue.enqueue(currRoot.getPlayer()); // Queue player
         }
     }

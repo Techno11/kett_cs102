@@ -5,6 +5,7 @@
 package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -70,12 +71,87 @@ public class TennisDatabase implements TennisDatabaseInterface {
         }
     }
 
+    /**
+     * Export entire Database to a file
+     * @param fileName path to file
+     * @throws TennisDatabaseException if the export fails
+     */
     public void saveToFile(String fileName) throws TennisDatabaseException {
-
+        StringBuilder toFile = new StringBuilder();
+        // Process Players first
+        TennisPlayerContainerIterator iter = tpc.iterator();
+        // Setup iterator for inorder traversal
+        iter.setInorder();
+        // Go through queue, placing each entry in the stringbuilder
+        while(iter.hasNext()) {
+            toFile.append(playerToFileString(iter.next())); // Append Player
+            toFile.append(System.getProperty("line.separator")); // New line
+        }
+        // Process Matches
+        for(TennisMatch t : tmc.getAllMatches()) {
+            toFile.append(matchToFileString(t)); // Append Match
+            toFile.append(System.getProperty("line.separator")); // New Line
+        }
+        // Write to file
+        try {
+            FileWriter myWriter = new FileWriter(fileName);
+            myWriter.write(toFile.toString());
+            myWriter.close();
+        } catch (IOException e) {
+            throw new TennisDatabaseException("Error writing to file: " + e.getMessage());
+        }
     }
 
-    public void reset() {
+    /**
+     * Convert player to string to be stored in file
+     * @param player player to be stringified
+     * @return player, in an importable format
+     */
+    private String playerToFileString(TennisPlayer player) {
+        StringBuilder f = new StringBuilder();
+        f.append("PLAYER");
+        f.append("/");
+        f.append(player.getId());
+        f.append("/");
+        f.append(player.getFirstName());
+        f.append("/");
+        f.append(player.getLastName());
+        f.append("/");
+        f.append(player.getBirthYear());
+        f.append("/");
+        f.append(player.getCountry());
+        return f.toString();
+    }
 
+    /**
+     * Convert match to string to be stored in file
+     * @param match Match to be stringified
+     * @return match, stored in an importable format
+     */
+    private String matchToFileString(TennisMatch match) {
+        StringBuilder f = new StringBuilder();
+        f.append("MATCH");
+        f.append("/");
+        f.append(match.getIdPlayer1());
+        f.append("/");
+        f.append(match.getIdPlayer2());
+        f.append("/");
+        f.append(match.getDateYear());
+        f.append(match.getDateMonth());
+        f.append(match.getDateDay());
+        f.append("/");
+        f.append(match.getTournament());
+        f.append("/");
+        f.append(match.getMatchScore());
+        return f.toString();
+    }
+
+    /**
+     * Resets the Database
+     */
+    public void reset() {
+        tpc = new TennisPlayerContainer();
+        tmc = new TennisMatchContainer();
     }
 
     /**
@@ -91,7 +167,7 @@ public class TennisDatabase implements TennisDatabaseInterface {
     /**
      * Get all players
      * @return array of all players
-     * @throws TennisDatabaseRuntimeException if there is some errir whilst getting players
+     * @throws TennisDatabaseRuntimeException if there is some error whilst getting players
      */
     public TennisPlayer[] getAllPlayers() throws TennisDatabaseRuntimeException {
         return tpc.getAllPlayers();
@@ -168,13 +244,5 @@ public class TennisDatabase implements TennisDatabaseInterface {
         } catch(TennisDatabaseRuntimeException e) {
             throw new TennisDatabaseException(e.getMessage());
         }
-    }
-
-    /**
-     * Resets the tennis database by reconstructing both containers
-     */
-    public void resetDatabase() {
-        tmc = new TennisMatchContainer();
-        tpc = new TennisPlayerContainer();
     }
 }

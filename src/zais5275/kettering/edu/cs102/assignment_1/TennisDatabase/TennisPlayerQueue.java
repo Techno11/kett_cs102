@@ -35,7 +35,7 @@ public class TennisPlayerQueue implements TennisPlayerQueueInterface {
      * @return if the queue is empty
      */
     public boolean isEmpty() {
-        return (numPlayers == 0);
+        return numPlayers == 0;
     }
 
     /**

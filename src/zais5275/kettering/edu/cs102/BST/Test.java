@@ -15,7 +15,10 @@ public class Test {
         bst.insert("Nancy");
         bst.insert("Wendy");
 
-        bst.insert("Carl");
+        //bst.insert("Carl");
+
+        //System.out.println(bst.getNumChildren(bst.root));
+        System.out.println(bst.isBalanced());
 
         boolean res1 = bst.search("Nancy");
         boolean res2 = bst.search("Zaiser");

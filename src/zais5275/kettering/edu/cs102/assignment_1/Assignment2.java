@@ -5,6 +5,8 @@
 package zais5275.kettering.edu.cs102.assignment_1;
 
 import zais5275.kettering.edu.cs102.assignment_1.TennisDatabase.*;
+
+import java.io.File;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -32,6 +34,7 @@ public class Assignment2 {
                 System.out.println("Error loading file: " + e.getMessage());
             }
         }
+
         // Create a loop to run and repeat
         while(true) {
             // Print Main Menu
@@ -82,11 +85,11 @@ public class Assignment2 {
                     break;
                 }
                 case 10: {
-                    // Import from File
+                    importFromFile();
                     break;
                 }
                 case 11: {
-                    // Export to file
+                    exportToFile();
                     break;
                 }
                 case -1 : { // No Input from console taken
@@ -101,9 +104,47 @@ public class Assignment2 {
         }
     }
 
+    // Imports from file
+    private static void exportToFile() {
+        // Get folder
+        System.out.print("Please Enter Path to Folder for Saving in: (No slash at end, please) ");
+        // Get Input
+        String folder = input.next();
+        // Get file name
+        System.out.print("Please Enter Filename to Save As: (No file extension, please) ");
+        // Get Input
+        String fileName = input.next();
+        try{
+            // Generate path
+            String path = folder + System.getProperty("file.separator") + fileName + ".txt";
+            System.out.println("Saving file to: \"" + path + "\"");
+            // Export to file
+            tDb.saveToFile(path);
+            // If we get here, file successfully loaded
+            System.out.println("Successfully exported data to file!");
+        } catch (TennisDatabaseException e) {
+            System.out.println("Failed to export to file: " + e.getMessage() + " Try again later. ");
+        }
+    }
+
+    // Imports from file
+    private static void importFromFile() {
+        System.out.print("Please Enter Path to File: ");
+        // Get Input
+        String temp = input.next();
+        try{
+            // Load from file
+            tDb.loadFromFile(temp);
+            // If we get here, file successfully loaded
+            System.out.println("Successfully loaded data from file!");
+        } catch (TennisDatabaseException e) {
+            System.out.print("Failed to import from file: " + e.getMessage() + " Try again later. ");
+        }
+    }
+
     // Resets database
     private static void resetDatabase() {
-        tDb.resetDatabase();
+        tDb.reset();
     }
 
     // Prints a player
@@ -298,10 +339,14 @@ public class Assignment2 {
     // Prints all players in Database
     private static void printAllPlayers() {
         // Get Players
-        TennisPlayer[] players = tDb.getAllPlayers();
-        // Iterate through players and print them
-        for(TennisPlayer p : players) {
-            printPlayer(p);
+        try {
+            TennisPlayer[] players = tDb.getAllPlayers();
+            // Iterate through players and print them
+            for(TennisPlayer p : players) {
+                printPlayer(p);
+            }
+        } catch (TennisDatabaseRuntimeException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -352,16 +397,11 @@ public class Assignment2 {
 
     // Format Player name for Printing
     private static String formatName(String playerId) {
-        //try {
-            // Get Player
-            TennisPlayer p = tDb.getPlayer(playerId);
-            // First letter of first name, and make it uppercase
-            char firstLetter = Character.toUpperCase(p.getFirstName().charAt(0));
-            // Proper Format
-            return firstLetter + "." +  p.getLastName().toUpperCase();
-        //} catch(TennisDatabaseRuntimeException e) {
-        //    System.out.println("Error formatting player name: " + e.getMessage());
-        //    return playerId;
-        //}
+        // Get Player
+        TennisPlayer p = tDb.getPlayer(playerId);
+        // First letter of first name, and make it uppercase
+        char firstLetter = Character.toUpperCase(p.getFirstName().charAt(0));
+        // Proper Format
+        return firstLetter + "." +  p.getLastName().toUpperCase();
     }
 }

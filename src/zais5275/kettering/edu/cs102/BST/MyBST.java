@@ -8,6 +8,44 @@ class MyBST {
         this.root = null;
     }
 
+
+    // Returns whether or not our BST is balanced
+    public boolean isBalanced() {
+        return isBalancedRec(root);
+    }
+
+    // Revursive implimentation of isBalanced
+    private boolean isBalancedRec(MyBSTNode currRoot) {
+        int leftNumChildren, rightNumChildren; // Number nested
+
+        // Base case: if tree is empty
+        if (currRoot == null)
+            return true;
+
+        // Get num children of left and right subtree
+        leftNumChildren = getNumChildren(currRoot.childLeft);
+        rightNumChildren = getNumChildren(currRoot.childRight);
+
+        // Check that the # of children are equal, then check this node's children
+        if (Math.abs(leftNumChildren - rightNumChildren) < 1 && isBalancedRec(currRoot.childLeft) && isBalancedRec(currRoot.childRight)){
+            return true;
+        }
+
+        // If we reach here, above if statement failed and tree isn't balanced
+        return false;
+    }
+
+    // Returns total number of vertical children of a BST node
+    private int getNumChildren(MyBSTNode currRoot) {
+        // Base Case: If tree is empty
+        if (currRoot == null) {
+            return 0;
+        }
+        // If tree is equal, then # nested is 1 + max child nested
+        return 1 + Math.max(getNumChildren(currRoot.childLeft), getNumChildren(currRoot.childRight));
+    }
+
+
     // Postorder traversal
     public void postorder() {
         postorderRec(this.root);

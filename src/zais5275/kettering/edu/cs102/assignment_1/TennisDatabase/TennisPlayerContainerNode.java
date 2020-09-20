@@ -18,9 +18,9 @@ class TennisPlayerContainerNode implements TennisPlayerContainerNodeInterface {
      */
     public TennisPlayerContainerNode(TennisPlayer tp) {
         player = tp;
+        childLeft = null;
+        childRight = null;
         this.listMatches = new SortedLinkedList<TennisMatch>();
-        this.childLeft = null;
-        this.childRight = null;
     }
 
     /**

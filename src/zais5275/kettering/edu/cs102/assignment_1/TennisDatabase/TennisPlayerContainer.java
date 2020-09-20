@@ -83,28 +83,31 @@ class TennisPlayerContainer implements TennisPlayerContainerInterface {
      * @return the updated input BST (represented by it's root node)
      * @throws TennisDatabaseException if there is an error during the insertion, most likely to be a duplicate entry
      */
-    private TennisPlayerContainerNode insertPlayerRec(TennisPlayerContainerNode currRoot, TennisPlayer p) throws TennisDatabaseException {
-        // Check if empty
-        if(currRoot == null) {
-            // Input BST empty, create new node to store input player, return it as new root of input BST
-            return new TennisPlayerContainerNode(p);
-        } else {
-            // BST not empty, proceed recursive insert in left/right subtree depending on comparison
-            int compartRes = p.getId().compareTo(currRoot.getPlayer().getId());
-            // 3-way comparison
-            if(compartRes < 0) {
-                // Input player is less than player in currRoot, insert input player in left subtree of currRoot
-                TennisPlayerContainerNode newLeftChildOfCurrRoot = insertPlayerRec(currRoot.getLeftChild(), p);
-                currRoot.setLeftChild(newLeftChildOfCurrRoot);
-                return currRoot;
-            } else if(compartRes > 0) {
-                // Input player is greater than player in currRoot, insert input player in right subtree or currRoot
-                TennisPlayerContainerNode newRightChildOfCurrRoot = insertPlayerRec(currRoot.getRightChild(), p);
+    private TennisPlayerContainerNode insertPlayerRec( TennisPlayerContainerNode currRoot, TennisPlayer p ) throws TennisDatabaseException{
+        // BASE CASE: check if input BST is empty.
+        if( currRoot == null ) {
+            // Input BST is empty, create new node to store input item, and return it.
+            TennisPlayerContainerNode newNode = new TennisPlayerContainerNode(p);
+            return newNode;
+        }
+        else {
+            // Input BST NOT empty, forward insert in left OR right subtree (depending on comparison).
+            int resultCompare = currRoot.getPlayer().compareTo(p);
+            // 3-way comparison.
+            if( resultCompare < 0 ) {
+                // Insert in right subtree of currRoot.
+                TennisPlayerContainerNode newRightChildOfCurrRoot = insertPlayerRec( currRoot.getRightChild(), p );
                 currRoot.setRightChild(newRightChildOfCurrRoot);
                 return currRoot;
-            } else {
-                // Error, duplicate ID (Already in BST)
-                throw new TennisDatabaseException("Insert failed, ID already stored in database");
+            }
+            else if( resultCompare > 0 ) {
+                // Insert in left subtree of currRoot.
+                TennisPlayerContainerNode newLeftChildOfCurrRoot = insertPlayerRec( currRoot.getLeftChild(), p );
+                currRoot.setLeftChild(newLeftChildOfCurrRoot);
+                return currRoot;
+            }
+            else {
+                throw new TennisDatabaseException("Error Inserting Player.");
             }
         }
     }
@@ -183,8 +186,20 @@ class TennisPlayerContainer implements TennisPlayerContainerInterface {
         // If our BST isn't empty, perform inorder Traversal.
         // First, Create an array
         TennisPlayer[] arr = new TennisPlayer[numPlayers];
-        // Then, Recursively fill the array
-        getAllPlayersRec(root, arr, 0);
+        // Then, get an iterator instance
+        TennisPlayerContainerIterator iter = this.iterator();
+        // Set Inorder
+        try {
+            iter.setInorder();
+        } catch (TennisDatabaseException e) {
+            throw new TennisDatabaseRuntimeException("Error getting all players: " + e.getMessage());
+        }
+        // Move the queue to an array
+        int i = 0;
+        while(iter.hasNext() && i < numPlayers) {
+            arr[i] = iter.next();
+            i++;
+        }
         // Finally, Sort it, in case it isn't in alphabetical order
         Arrays.sort(arr);
         // Return final product
@@ -192,22 +207,12 @@ class TennisPlayerContainer implements TennisPlayerContainerInterface {
     }
 
     /**
-     * Perform an inOrder traversal of a BST to fill an array
-     * @param currRoot Current node to be searching
-     * @param arr Array to fill with the contents of the BST
-     * @param index index to insert the current node's contents at
+     * Gets the matches of a player
+     * @param playerId id of player whose matches you want
+     * @return Array of matches that player is in
+     * @throws TennisDatabaseException If there is an error in the database
+     * @throws TennisDatabaseRuntimeException If there is an error calculating
      */
-    private void getAllPlayersRec(TennisPlayerContainerNode currRoot, TennisPlayer[] arr, int index) {
-        if(currRoot == null) { } // We've reached the end of a leaf, do nothing
-        else {
-            getAllPlayersRec(currRoot.getLeftChild(), arr, index); // Go down left leaf
-            // We must do this because an "int" is a primitive, not an object and isn't a pointer, like other objects.
-            while(arr[index] != null) index++; // Find next open place in array.
-            arr[index]= currRoot.getPlayer(); // Insert into array
-            getAllPlayersRec(currRoot.getRightChild(), arr, index); // Go down right leaf
-        }
-    }
-
     public TennisMatch[] getMatchesOfPlayer(String playerId) throws TennisDatabaseException, TennisDatabaseRuntimeException {
         return getPlayerRec(root, playerId).getMatches();
     }

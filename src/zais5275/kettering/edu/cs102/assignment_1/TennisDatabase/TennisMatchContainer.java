@@ -59,10 +59,10 @@ class TennisMatchContainer implements  TennisMatchContainerInterface {
      */
     public void deleteMatchesOfPlayer(String playerId) throws TennisDatabaseRuntimeException {
         ArrayList<Integer> toBeDeleted = new ArrayList<>();
-        for(int i = 0; i < matches.size(); i++) {
+        for(int i = 0; i < matches.size(); i++) { // Get all matches to be deleted
             if(matches.get(i).getIdPlayer1().equals(playerId) || matches.get(i).getIdPlayer2().equals(playerId)) toBeDeleted.add(i);
         }
-        for(int i = 0; i < toBeDeleted.size(); i++) {
+        for(int i = 0; i < toBeDeleted.size(); i++) { // Delete matches
             matches.remove(toBeDeleted.get(i) - i);
         }
     }
