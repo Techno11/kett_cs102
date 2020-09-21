@@ -1,4 +1,4 @@
-package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
+package TennisDatabase;
 /*
  * @author Soren Zaiser (zais5275)
  * 7Sept2020

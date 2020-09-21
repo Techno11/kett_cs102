@@ -1,6 +1,6 @@
 package zais5275.kettering.edu.cs102.assignment_1;
 
-import zais5275.kettering.edu.cs102.assignment_1.TennisDatabase.*;
+import TennisDatabase.*;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

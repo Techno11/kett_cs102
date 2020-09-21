@@ -5,7 +5,7 @@
 // CS-102, Summer 2020
 // Assignment 2
 
-package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
+package TennisDatabase;
 
 // Custom (unchecked) exception for the TennisDatabase package, representing non critical runtime errors (handling is optional).
 public class TennisDatabaseRuntimeException extends java.lang.RuntimeException {

@@ -1,11 +1,8 @@
-
-
-
 // Giuseppe Turini
 // CS-102, Summer 2020
 // Assignment 2
 
-package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
+package TennisDatabase;
 
 // SortedLinkedListNode generic class, implementing the node for the SortedLinkedList class.
 class SortedLinkedListNode<T> {

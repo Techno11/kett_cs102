@@ -2,16 +2,16 @@
  * @author Soren Zaiser (zais5275)
  * 7Sept2020
  */
-package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
+package TennisDatabase;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 
 class TennisMatchContainer implements  TennisMatchContainerInterface {
 
-    private ArrayList<TennisMatch> matches = new ArrayList<>();
+    private LinkedList<TennisMatch> matches = new LinkedList<>();
 
     /**
      * Get number of matches
@@ -58,7 +58,7 @@ class TennisMatchContainer implements  TennisMatchContainerInterface {
      * @throws TennisDatabaseRuntimeException
      */
     public void deleteMatchesOfPlayer(String playerId) throws TennisDatabaseRuntimeException {
-        ArrayList<Integer> toBeDeleted = new ArrayList<>();
+        LinkedList<Integer> toBeDeleted = new LinkedList<>();
         for(int i = 0; i < matches.size(); i++) { // Get all matches to be deleted
             if(matches.get(i).getIdPlayer1().equals(playerId) || matches.get(i).getIdPlayer2().equals(playerId)) toBeDeleted.add(i);
         }

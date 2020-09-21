@@ -2,11 +2,9 @@
  * @author Soren Zaiser (zais5275)
  * 7Sept2020
  */
-package zais5275.kettering.edu.cs102.assignment_1;
 
-import zais5275.kettering.edu.cs102.assignment_1.TennisDatabase.*;
+import TennisDatabase.*;
 
-import java.io.File;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -138,7 +136,7 @@ public class Assignment2 {
             // If we get here, file successfully loaded
             System.out.println("Successfully loaded data from file!");
         } catch (TennisDatabaseException e) {
-            System.out.print("Failed to import from file: " + e.getMessage() + " Try again later. ");
+            System.out.println("Failed to import from file: " + e.getMessage() + " Try again later. ");
         }
     }
 

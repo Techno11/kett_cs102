@@ -2,7 +2,7 @@
  * @author Soren Zaiser (zais5275)
  * 7Sept2020
  */
-package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
+package TennisDatabase;
 
 import java.util.Arrays;
 
@@ -26,7 +26,6 @@ class TennisPlayerContainer implements TennisPlayerContainerInterface {
     public TennisPlayerContainerIterator iterator() {
         return new TennisPlayerContainerIterator(this.root);
     }
-
 
     /**
      * Get a player's information from a given ID
@@ -129,40 +128,54 @@ class TennisPlayerContainer implements TennisPlayerContainerInterface {
      * @return finalized node
      */
     private TennisPlayerContainerNode deletePlayerRec(TennisPlayerContainerNode currRoot, String id) {
-        // Base Case: if tree empty
-        if (currRoot == null)  return currRoot;
-
-        // Go down tree
+        // Base case, if tree is empty
+        if (currRoot == null) return null;
+        // Compare
         int compare = currRoot.getPlayer().getId().compareTo(id);
-        if (compare < 0) {
+
+        if (compare > 0) { // Search Left leaf for player
             currRoot.setLeftChild(deletePlayerRec(currRoot.getLeftChild(), id));
-        } else if (compare > 0) {
+        } else if (compare < 0) { // Search Right leaf for player
             currRoot.setRightChild(deletePlayerRec(currRoot.getRightChild(), id));
-        }
+        } else { // We found the player, lets remove it!
+            // if our to-be-removed element has 2 children
+            if (currRoot.getLeftChild() != null && currRoot.getRightChild() != null) {
+                TennisPlayerContainerNode tempNode = currRoot;
+                // Find min from right
+                TennisPlayerContainerNode minNodeForRight = min(tempNode.getRightChild());
+                // Replace with min from right leaf
+                currRoot = minNodeForRight;
+                // Delete min node from right
+                currRoot.setRightChild(deletePlayerRec(currRoot.getRightChild(), minNodeForRight.getPlayer().getId()));
 
-
-        // If key is same as root, root node needs to be deleted
-        else {
-            // node with one or no child
-            if (currRoot.getRightChild() == null) {
-                return currRoot.getLeftChild();
-            } else if (currRoot.getLeftChild() == null) {
-                return currRoot.getRightChild();
             }
-
-            // if we have two children, get next via inorder
-            String min = currRoot.getPlayer().getId();
-            while (currRoot.getLeftChild() != null)
-            {
-                min = currRoot.getLeftChild().getPlayer().getId();
+            // If we only have left child
+            else if (currRoot.getLeftChild() != null) {
                 currRoot = currRoot.getLeftChild();
             }
-
-            // Delete next via inorder
-            currRoot.setRightChild(deletePlayerRec(currRoot.getRightChild(), currRoot.getPlayer().getId()));
+            // If we only have right child
+            else if (currRoot.getRightChild() != null) {
+                currRoot = currRoot.getRightChild();
+            }
+            // If we haveno children
+            else {
+                currRoot = null;
+            }
         }
+        return currRoot;
+    }
 
-        return root;
+    /**
+     * Get minimum element from a BST
+     * @param currRoot root to search
+     * @return min element
+     */
+    private TennisPlayerContainerNode min(TennisPlayerContainerNode currRoot) {
+        if (currRoot.getLeftChild() == null) {
+            return currRoot;
+        } else {
+            return min(currRoot.getLeftChild());
+        }
     }
 
     /**

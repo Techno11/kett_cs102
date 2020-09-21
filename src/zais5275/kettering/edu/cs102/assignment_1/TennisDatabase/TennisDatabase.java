@@ -2,7 +2,7 @@
  * @author Soren Zaiser (zais5275)
  * 7Sept2020
  */
-package zais5275.kettering.edu.cs102.assignment_1.TennisDatabase;
+package TennisDatabase;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -57,6 +57,8 @@ public class TennisDatabase implements TennisDatabaseInterface {
                         month = Integer.parseInt(split[3].substring(4,6));
                         day = Integer.parseInt(split[3].substring(6,8));
                     } catch (NumberFormatException e) {
+                        throw new TennisDatabaseException("Couldn't import data: Invalid date for " + split[4]);
+                    } catch (StringIndexOutOfBoundsException e) {
                         throw new TennisDatabaseException("Couldn't import data: Invalid date for " + split[4]);
                     }
                     // Add Match to our list
@@ -137,13 +139,26 @@ public class TennisDatabase implements TennisDatabaseInterface {
         f.append(match.getIdPlayer2());
         f.append("/");
         f.append(match.getDateYear());
-        f.append(match.getDateMonth());
-        f.append(match.getDateDay());
+        f.append(formatNumber(match.getDateMonth()));
+        f.append(formatNumber(match.getDateDay()));
         f.append("/");
         f.append(match.getTournament());
         f.append("/");
         f.append(match.getMatchScore());
         return f.toString();
+    }
+
+    /**
+     * Format number for exporting date, add 0 before num if required
+     * @param num Number to parse
+     * @return parsed and formatted number
+     */
+    private String formatNumber(int num) {
+        if(num > 9) {
+            return num + "";
+        } else {
+            return "0" + num;
+        }
     }
 
     /**
