@@ -1,1 +1,0 @@
-I chose to use a LinkedList in the TennisMatchContainer because it uses a doubly linked list to store elements. An arraylist is much slower because array manipulation is much slower. Linked list is faster because being node based does not require as much shifting in elements, just updated pointers.
